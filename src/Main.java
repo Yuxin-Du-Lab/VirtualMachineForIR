@@ -20,7 +20,7 @@ public class Main {
     static String console = "";
 
     public static void main(String[] args) {
-//        copyIRFile();
+        copyIRFile();
         readOrders();
 //        printOrders();
         loadLabel();
@@ -155,6 +155,7 @@ public class Main {
                 para--;
                 $paraAssign(para);
             } else if (Pattern.matches(FuncCall, order)) {
+                int a = 10;
                 // do nothing
 //                System.out.println("> FuncCall");
             } else if (Pattern.matches(StackPush, order)) {
@@ -189,6 +190,22 @@ public class Main {
             } else if (Pattern.matches(label, order)) {
 //                System.out.println("> label");
 //                label2pc.put(buf[0], pc);
+            } else if(Pattern.matches(GetIntCall, order)) {
+//                System.out.println("> GetIntCall");
+                ret = scanner.nextInt();
+                $retAssign(ret);
+            } else if (Pattern.matches(PrintCall, order)) {
+                String[] buf2 = order.split("\\$");
+                if (buf2.length > 1) {
+//                    System.out.println("> PrintFormatString");
+                    String processed = buf2[1];
+                    System.out.println(processed);
+                    console += processed;
+                } else {
+                    int value = var_map.get(buf[2]);
+                    System.out.println(value);
+                    console += value;
+                }
             } else if (Pattern.matches(ArrAssign, order)) {
 //                System.out.println("> ArrAssign");
                 String rVal = buf[2];
@@ -209,22 +226,6 @@ public class Main {
                 } else {
                     int rValValue = var_map.get(rVal);
                     memory4int[arrGp + off] = rValValue;
-                }
-            } else if(Pattern.matches(GetIntCall, order)) {
-//                System.out.println("> GetIntCall");
-                ret = scanner.nextInt();
-                $retAssign(ret);
-            } else if (Pattern.matches(PrintCall, order)) {
-                String[] buf2 = order.split("\\$");
-                if (buf2.length > 1) {
-//                    System.out.println("> PrintFormatString");
-                    String processed = buf2[1];
-                    System.out.println(processed);
-                    console += processed;
-                } else {
-                    int value = var_map.get(buf[2]);
-                    System.out.println(value);
-                    console += value;
                 }
             } else if (Pattern.matches(NormalVarAssign, order)) {
                 if (buf.length == 3) {
