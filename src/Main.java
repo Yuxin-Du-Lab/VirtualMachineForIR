@@ -43,10 +43,10 @@ public class Main {
         String NormalVarAssign = "[^=\\[\\]]+=.+";
         String tempVar = "%[0-9]+";
         String hasArr = "[^\\[\\]]+\\[[^]]+]";
-        String label = "&.+";
+        String label = "label.+";
         String JAL = "^jal .*";
         String JR = "^jr .*";
-        String J = "^j &.*";
+        String J = "^j label.*";
         String BEQ = "^beq .*";
         String ParaInt = "^para int .*";
         String PrintCall = "^\\^call print .*";
@@ -150,7 +150,7 @@ public class Main {
             } else if(Pattern.matches(ParaInt, order)) {
 //                System.out.println("> ParaInt");
                 String paraName = buf[2];
-                int paraValue = stack[sp - para - 1];
+                int paraValue = stack[sp - para];
                 var_map.put(paraName, paraValue);
                 para--;
                 $paraAssign(para);
@@ -401,7 +401,7 @@ public class Main {
     }
 
     public static void loadLabel() {
-        String label = "&.+";
+        String label = "label.+";
         int pc_tmp = 0;
         for (String order : IM) {
             if (Pattern.matches(label, order)) {
